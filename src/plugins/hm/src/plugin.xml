@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugin>
+	<!-- Main plugin class  -->
+	<class>larson.hm.plugin.HMPlugin</class>
+	<!-- Plugin meta-data -->
+	<name>hm</name>
+	<description>This is the plugin for homemanager with new construct.</description>
+	<author>larson</author>
+ 
+	<version>1.1.0</version>
+	<date>13/4/2015</date>
+	<url>http://localhost:9090/openfire/plugins.jsp</url>
+	<minServerVersion>3.4.1</minServerVersion>
+	<licenseType>gpl</licenseType>
+ 
+	<adminconsole>   
+		<tab id="tab-server">
+          <sidebar id="sidebar-server-settings">
+              <item id="hm-index" name="hm-index" url="hm-index.jsp" description="Click is trigger hm plugin" />
+          </sidebar>
+    	</tab>
+	</adminconsole>
+
+</plugin>
