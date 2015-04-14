@@ -2,8 +2,8 @@ package larson.hm.plugin.service.impl;
 
 import java.util.List;
 
-import larson.hm.plugin.bean.Notice;
 import larson.hm.plugin.dao.impl.NoticeDao;
+import larson.hm.plugin.model.bean.Notice;
 
 public class GetNoticeService {
 

@@ -8,13 +8,14 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import larson.hm.plugin.bean.Homework;
-import larson.hm.plugin.bean.Major;
-import larson.hm.plugin.bean.Notice;
-import larson.hm.plugin.bean.Subject;
-import larson.hm.plugin.bean.User;
 import larson.hm.plugin.handler.BeanHandler;
 import larson.hm.plugin.handler.ResultSetHandler;
+import larson.hm.plugin.model.bean.Homework;
+import larson.hm.plugin.model.bean.Major;
+import larson.hm.plugin.model.bean.Notice;
+import larson.hm.plugin.model.bean.Subject;
+import larson.hm.plugin.model.bean.User;
+
 import com.mchange.v2.c3p0.ComboPooledDataSource;
 
 /**

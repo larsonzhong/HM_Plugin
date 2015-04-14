@@ -2,7 +2,7 @@ package larson.hm.plugin.dao.impl;
 
 import java.util.List;
 
-import larson.hm.plugin.bean.Subject;
+import larson.hm.plugin.model.bean.Subject;
 import larson.hm.plugin.util.JdbcUtils;
 import larson.hm.plugin.util.MyException;
 

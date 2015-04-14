@@ -1,7 +1,7 @@
 package larson.hm.plugin.service.impl;
 
-import larson.hm.plugin.bean.User;
 import larson.hm.plugin.dao.impl.UserDao;
+import larson.hm.plugin.model.bean.User;
 import larson.hm.plugin.util.Constant;
 
 public class LoginService {

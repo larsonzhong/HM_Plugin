@@ -1,9 +1,8 @@
-package larson.hm.plugin.bean;
+package larson.hm.plugin.model.bean;
 
-public class Subject {
+public class Major {
 	private int id;
 	private String name;
-	private String majorName;
 
 	public int getId() {
 		return id;
@@ -19,14 +18,6 @@ public class Subject {
 
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	public String getMajorName() {
-		return majorName;
-	}
-
-	public void setMajorName(String majorName) {
-		this.majorName = majorName;
 	}
 
 }

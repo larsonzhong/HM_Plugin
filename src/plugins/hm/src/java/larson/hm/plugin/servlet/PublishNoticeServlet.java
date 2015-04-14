@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import larson.hm.plugin.bean.Notice;
 import larson.hm.plugin.dao.impl.NoticeDao;
+import larson.hm.plugin.model.bean.Notice;
 import larson.hm.plugin.util.Constant;
 
 public class PublishNoticeServlet extends HttpServlet {

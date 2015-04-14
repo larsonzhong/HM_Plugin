@@ -8,8 +8,8 @@ import java.io.InputStream;
 
 import javax.servlet.http.HttpServletRequest;
 
-import larson.hm.plugin.bean.Homework;
 import larson.hm.plugin.dao.impl.HomeworkDao;
+import larson.hm.plugin.model.bean.Homework;
 
 /**
  * 处理客户端发送过来数据的类

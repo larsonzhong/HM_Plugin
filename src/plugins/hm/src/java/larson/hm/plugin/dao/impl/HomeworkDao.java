@@ -8,7 +8,7 @@ package larson.hm.plugin.dao.impl;
  */
 import java.util.List;
 
-import larson.hm.plugin.bean.Homework;
+import larson.hm.plugin.model.bean.Homework;
 import larson.hm.plugin.util.JdbcUtils;
 import larson.hm.plugin.util.MyException;
 

@@ -21,8 +21,8 @@ import org.xmpp.packet.JID;
 public class HMPlugin implements Plugin, SessionEventListener {
 
 	private IQRouter router;
-	public static final String HM_MODULE_NAME = "wechat";
-	public static final String HM_NAMESPACE = "paChat";
+	public static final String HM_MODULE_NAME = "hmanager";
+	public static final String HM_NAMESPACE = "hmanager";
 	
 	
 
@@ -39,13 +39,13 @@ public class HMPlugin implements Plugin, SessionEventListener {
 		System.out.println("作业插件初始化...");
 
 		// 从客户端->微信
-		IQHandler myHandler = new WeChatIQHander();
+		IQHandler myHandler = new HMIQHander();
 		IQRouter iqRouter = XMPPServer.getInstance().getIQRouter();
 		iqRouter.addHandler(myHandler);
 
-		// 添加微信url为白名单
-		AuthCheckFilter.addExclude("wechat/*");
-		AuthCheckFilter.addExclude("wechat/wechat/*");
+		// 添加作业交互的url为白名单(如果不添加和移除会导致外部访问servlet的时候跳转到了登录页面)
+		AuthCheckFilter.addExclude("hm/*");
+		AuthCheckFilter.addExclude("hm/hm/*");
 
 	}
 
@@ -72,8 +72,8 @@ public class HMPlugin implements Plugin, SessionEventListener {
 	@Override
 	public void destroyPlugin() {
 		// 移除微信白名单
-		AuthCheckFilter.addExclude("wechat/*");
-		AuthCheckFilter.removeExclude("wechat/wechat/*");
+		AuthCheckFilter.addExclude("hm/*");
+		AuthCheckFilter.removeExclude("hm/hm/*");
 	}
 
 	@Override

@@ -2,8 +2,8 @@ package larson.hm.plugin.service.impl;
 
 import java.util.List;
 
-import larson.hm.plugin.bean.Major;
 import larson.hm.plugin.dao.impl.MajorDao;
+import larson.hm.plugin.model.bean.Major;
 
 public class GetMajorService {
 

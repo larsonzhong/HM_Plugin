@@ -2,7 +2,7 @@ package larson.hm.plugin.handler;
 
 import java.io.UnsupportedEncodingException;
 
-import larson.hm.plugin.bean.Homework;
+import larson.hm.plugin.model.bean.Homework;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

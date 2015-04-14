@@ -3,8 +3,8 @@ package larson.hm.plugin.service.impl;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
-import larson.hm.plugin.bean.Subject;
 import larson.hm.plugin.dao.impl.SubjectDao;
+import larson.hm.plugin.model.bean.Subject;
 
 public class GetSubjectService {
 

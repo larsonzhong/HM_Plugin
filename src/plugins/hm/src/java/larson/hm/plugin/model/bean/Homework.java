@@ -1,4 +1,4 @@
-package larson.hm.plugin.bean;
+package larson.hm.plugin.model.bean;
 
 public class Homework {
 	/**

@@ -2,7 +2,7 @@ package larson.hm.plugin.dao.impl;
 
 import java.util.List;
 
-import larson.hm.plugin.bean.Notice;
+import larson.hm.plugin.model.bean.Notice;
 import larson.hm.plugin.util.JdbcUtils;
 
 public class NoticeDao {

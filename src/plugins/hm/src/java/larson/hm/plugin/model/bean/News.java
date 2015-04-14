@@ -1,4 +1,4 @@
-package larson.hm.plugin.bean;
+package larson.hm.plugin.model.bean;
 
 /**
  * 锟斤拷锟斤拷锟斤拷锟揭拷锟斤拷锟斤拷锟揭筹拷锟绞憋拷锟斤拷adapter锟矫碉拷

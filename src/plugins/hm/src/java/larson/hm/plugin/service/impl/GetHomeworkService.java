@@ -2,8 +2,8 @@ package larson.hm.plugin.service.impl;
 
 import java.util.List;
 
-import larson.hm.plugin.bean.Homework;
 import larson.hm.plugin.dao.impl.HomeworkDao;
+import larson.hm.plugin.model.bean.Homework;
 
 public class GetHomeworkService {
 

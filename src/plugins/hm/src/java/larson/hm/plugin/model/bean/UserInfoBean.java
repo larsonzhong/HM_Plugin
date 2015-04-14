@@ -1,14 +1,13 @@
-package larson.hm.plugin.bean;
+package larson.hm.plugin.model.bean;
 
 /**
  * 所有用户的基类
  * 
  * @author larson
- * @since 2014/8/14
- * 去除了专业。系就表示了专业
+ * @since 2014/8/14 去除了专业。系就表示了专业
  * 
  */
-public class User {
+public class UserInfoBean {
 	/**
 	 * 用户在服务器存储的id号，唯一标示一个用户
 	 */
@@ -35,10 +34,10 @@ public class User {
 	 */
 	protected String phone;
 
-//	/**
-//	 * 所在系别
-//	 */
-//	protected String sdept;
+	// /**
+	// * 所在系别
+	// */
+	// protected String sdept;
 	/**
 	 * 所学专业
 	 */
@@ -51,7 +50,7 @@ public class User {
 	/**
 	 * 学生类别，分为班干部，学委，和普通学生
 	 */
-	protected String type;
+	protected String role;
 
 	public String getMajorName() {
 		return majorName;
@@ -61,21 +60,21 @@ public class User {
 		this.majorName = majorName;
 	}
 
-	public String getType() {
-		return type;
+	// public String getSdept() {
+	// return sdept;
+	// }
+	//
+	// public void setSdept(String sdept) {
+	// this.sdept = sdept;
+	// }
+
+	public String getRole() {
+		return role;
 	}
 
-	public void setType(String type) {
-		this.type = type;
+	public void setRole(String role) {
+		this.role = role;
 	}
-
-//	public String getSdept() {
-//		return sdept;
-//	}
-//
-//	public void setSdept(String sdept) {
-//		this.sdept = sdept;
-//	}
 
 	public String getClasses() {
 		return classes;
@@ -136,6 +135,6 @@ public class User {
 	@Override
 	public String toString() {
 		return username + password + nickname + groups + phone + majorName
-				+ classes + type;
+				+ classes + role;
 	}
 }

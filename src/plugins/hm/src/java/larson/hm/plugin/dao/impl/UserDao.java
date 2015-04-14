@@ -1,6 +1,6 @@
 package larson.hm.plugin.dao.impl;
 
-import larson.hm.plugin.bean.User;
+import larson.hm.plugin.model.bean.User;
 import larson.hm.plugin.util.JdbcUtils;
 import larson.hm.plugin.util.MyException;
 
