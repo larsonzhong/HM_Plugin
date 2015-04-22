@@ -1,15 +1,13 @@
 package larson.hm.plugin;
 
 import larson.hm.plugin.handler.FromAppHandler;
+import larson.hm.plugin.util.SysoUtil;
 
 import org.dom4j.DocumentException;
 import org.jivesoftware.openfire.IQHandlerInfo;
 import org.jivesoftware.openfire.auth.UnauthorizedException;
 import org.jivesoftware.openfire.handler.IQHandler;
 import org.xmpp.packet.IQ;
-
-import pa.wechat.plugin.handler.FromVChatHandler;
-import pa.wechat.plugin.util.SysoUtil;
 
 /**
  * 入口的handler，拿到客户端发过来的数据交给其他handler处理，因此，把这个handler放到plugin包下。

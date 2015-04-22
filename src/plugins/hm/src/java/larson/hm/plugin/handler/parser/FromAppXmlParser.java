@@ -1,7 +1,6 @@
 package larson.hm.plugin.handler.parser;
 
 import larson.hm.plugin.HMPlugin;
-import larson.hm.plugin.model.bean.FromAppContentBean;
 import larson.hm.plugin.model.bean.UserInfoBean;
 import larson.hm.plugin.model.holder.FromAppHolder;
 import larson.hm.plugin.util.SysoUtil;
@@ -33,12 +32,11 @@ public class FromAppXmlParser {
 		String userInfoJson = pace.element("userInfoJson").getText();
 		//2.转换实例对象
 		Gson gson = new Gson();
-		FromAppContentBean conetnt = gson.fromJson(contentJson, FromAppContentBean.class);
 		UserInfoBean userInfo =  gson.fromJson(userInfoJson, UserInfoBean.class);
 		//3.填充实例数据
 		FromAppHolder holder = new FromAppHolder();
 		holder.setCmd(cmd);
-		holder.setConetnt(conetnt);
+		holder.setConetntJson(contentJson);
 		holder.setUserInfo(userInfo);
 		
 		SysoUtil.print("the cmd is "+cmd);

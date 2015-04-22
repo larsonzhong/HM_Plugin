@@ -1,6 +1,5 @@
 package larson.hm.plugin.model.bean;
 
-import larson.hm.plugin.bean.News;
 
 public class Notice extends News{
 

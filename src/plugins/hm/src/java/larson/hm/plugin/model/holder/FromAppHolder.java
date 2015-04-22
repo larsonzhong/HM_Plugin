@@ -1,11 +1,10 @@
 package larson.hm.plugin.model.holder;
 
-import larson.hm.plugin.model.bean.FromAppContentBean;
 import larson.hm.plugin.model.bean.UserInfoBean;
 
 public class FromAppHolder {
 	private String cmd;
-	private FromAppContentBean conetnt;
+	private String conetntJson;
 	private UserInfoBean userInfo;
 
 	public String getCmd() {
@@ -16,12 +15,12 @@ public class FromAppHolder {
 		this.cmd = cmd;
 	}
 
-	public FromAppContentBean getConetnt() {
-		return conetnt;
+	public String getConetntJson() {
+		return conetntJson;
 	}
 
-	public void setConetnt(FromAppContentBean conetnt) {
-		this.conetnt = conetnt;
+	public void setConetntJson(String conetntJson) {
+		this.conetntJson = conetntJson;
 	}
 
 	public UserInfoBean getUserInfo() {

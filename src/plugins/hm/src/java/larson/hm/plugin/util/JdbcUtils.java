@@ -4,19 +4,16 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-import larson.hm.plugin.handler.BeanHandler;
 import larson.hm.plugin.handler.ResultSetHandler;
 import larson.hm.plugin.model.bean.Homework;
 import larson.hm.plugin.model.bean.Major;
 import larson.hm.plugin.model.bean.Notice;
 import larson.hm.plugin.model.bean.Subject;
-import larson.hm.plugin.model.bean.User;
 
-import com.mchange.v2.c3p0.ComboPooledDataSource;
+import org.jivesoftware.database.DbConnectionManager;
 
 /**
  * ��ݿ����
@@ -26,129 +23,64 @@ import com.mchange.v2.c3p0.ComboPooledDataSource;
  */
 public class JdbcUtils {
 
-	private static ComboPooledDataSource ds = null;
-	// private static Connection conn;
-
-	static {
-		try {
-			/**
-			 * ��һ���´������ļ�����ȥ�� InputStream in =
-			 * JdbcUtils.class.getClassLoader
-			 * ().getResourceAsStream("db.properties"); Properties properties =
-			 * new Properties(); properties.load(in); String url =
-			 * properties.getProperty("url"); String user =
-			 * properties.getProperty("user"); String passwd =
-			 * properties.getProperty("password"); String driver =
-			 * properties.getProperty("driver"); Class.forName(driver); conn =
-			 * DriverManager.getConnection(url, user, passwd)
-			 * �ڶ�����ֱ���ڴ�������д ds.setDriverClass(driver);
-			 * ds.setJdbcUrl(url); ds.setUser(user); ds.setPassword(passwd);
-			 * 
-			 * ds.setInitialPoolSize(10); ds.setMinPoolSize(5);
-			 * ds.setMaxPoolSize(20);
-			 * ��������ͨ��XML�ļ������XML�ļ��������classPath
-			 * ·�����棬Ȼ�����ָ�����ص�configName,��ָ��ʹ��Ĭ�ϵ�
-			 * java�������Զ����������ļ������������������ܾõ�
-			 */
-			ds = new ComboPooledDataSource("mysql");
-
-		} catch (Exception e) {
-			throw new ExceptionInInitializerError(e);
-		}
-	}
-
 	/**
-	 * ��ȡ����
+	 * 获取连接
 	 * 
 	 * @return
 	 * @throws SQLException
 	 */
-	public static Connection getConnection() throws SQLException {
-		return ds.getConnection();
+	private static Connection getConnection() throws SQLException {
+		return DbConnectionManager.getConnection();
 	}
 
 	/**
-	 * �ͷ�����
+	 * 关闭连接
 	 * 
-	 * @param conn
-	 * @param st
-	 * @param rs
+	 * @param resultSet
+	 * @param statement
+	 * @param connection
 	 */
-	public static void release(Connection conn, Statement st, ResultSet rs) {
-		//连接数过多的时候我手动关闭
-		try {
-			if(ds.getNumConnections()>200)
-				ds.close();
-		} catch (SQLException e1) {
-			e1.printStackTrace();
-		}
-
-		if (rs != null) {
-			try {
-				rs.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			rs = null;
-
-		}
-		if (st != null) {
-			try {
-				st.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		if (conn != null) {
-			try {
-				conn.close();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
+	public static void release(Connection connection,
+			PreparedStatement statement, ResultSet resultSet) {
+		DbConnectionManager.closeConnection(resultSet, statement, connection);
 	}
 
 	/**
-	 * �滻dao�е���ɾ�ķ���
 	 * 
 	 * @param sql
 	 * @param params
 	 * @throws SQLException
 	 */
-	public static void update(String sql, Object params[]) throws SQLException {
+	public static int update(String sql, Object params[]) throws SQLException {
 		Connection conn = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		int effectRaw = 0;
 
 		try {
 			conn = getConnection();
-			/**
-			 * ͨ�����dmd���Ի�ȡ����ݿ������й���Ϣ DatabaseMetaData dmd =
-			 * conn.getMetaData(); dmd.getDatabaseProductName();
-			 */
 			ps = conn.prepareStatement(sql);
 			for (int i = 0; i < params.length; i++) {
 				ps.setObject(i + 1, params[i]);
 			}
-			System.out.println(ps.toString());
-			ps.executeUpdate();
+			effectRaw = ps.executeUpdate();
 
 		} finally {
 			release(conn, ps, rs);
 		}
+		return effectRaw;
 	}
 
 	/**
-	 * �滻����dao�еĲ�ѯ ����ģʽ(��ʱ����ԭʼ�ķ���validateQuery()���)
 	 * 
 	 * @param sql
 	 * @param params
 	 * @param rsh
 	 * @return
-	 * @throws SQLException
+	 * @throws Exception
 	 */
-	public static Object query(String sql, Object params[], ResultSetHandler rsh)
-			throws SQLException {
+	public static <T> Object query(String sql, Object params[],
+			ResultSetHandler rsh) throws Exception {
 
 		Connection conn = null;
 		PreparedStatement st = null;
@@ -169,27 +101,6 @@ public class JdbcUtils {
 	}
 
 	/**
-	 * ��½У��
-	 */
-	public static User validateQuery(String sql) throws SQLException {
-		User user = null;
-		Connection conn = null;
-		PreparedStatement st = null;
-		ResultSet rs = null;
-
-		try {
-			conn = getConnection();
-			st = conn.prepareStatement(sql);
-			System.out.println("登陆验证---"+sql);
-			rs = st.executeQuery();
-			user = (User) new BeanHandler(User.class).handler(rs);
-			return user;
-		} finally {
-			release(conn, st, rs);
-		}
-	}
-
-	/**
 	 * ��ȡ���е�major
 	 * 
 	 * @param beanHandler
@@ -198,7 +109,7 @@ public class JdbcUtils {
 	 */
 	public static List<Major> getAllMajors(String sql) {
 		Connection conn = null;
-		Statement st = null;
+		PreparedStatement st = null;
 		ResultSet rs = null;
 
 		Major major = null;
@@ -206,7 +117,7 @@ public class JdbcUtils {
 
 		try {
 			conn = getConnection();
-			st = conn.createStatement();
+			st = conn.prepareStatement(sql);
 			rs = st.executeQuery(sql);
 
 			while (rs.next()) {
@@ -225,7 +136,6 @@ public class JdbcUtils {
 	}
 
 	/**
-	 * ��ȡ���е�subject
 	 * 
 	 * @param beanHandler
 	 * @param sql
@@ -233,7 +143,7 @@ public class JdbcUtils {
 	 */
 	public static List<Subject> getAllSubjects(String sql) {
 		Connection conn = null;
-		Statement st = null;
+		PreparedStatement st = null;
 		ResultSet rs = null;
 
 		Subject subject = null;
@@ -241,7 +151,7 @@ public class JdbcUtils {
 
 		try {
 			conn = getConnection();
-			st = conn.createStatement();
+			st = conn.prepareStatement(sql);
 			rs = st.executeQuery(sql);
 
 			while (rs.next()) {
@@ -259,44 +169,6 @@ public class JdbcUtils {
 			release(conn, st, rs);
 		}
 	}
-
-//	/**
-//	 * ��ȡ���е�subject
-//	 * 
-//	 * @param beanHandler
-//	 * @param sql
-//	 * @return
-//	 */
-//	public static Homework getLastHomework(String sql) {
-//		Connection conn = null;
-//		Statement st = null;
-//		ResultSet rs = null;
-//
-//		Homework homework = null;
-//
-//		try {
-//			conn = getConnection();
-//			st = conn.createStatement();
-//			rs = st.executeQuery(sql);
-//
-//			if (rs.next()) {
-//				homework = new Homework();
-//				homework.setDescribe(rs.getString("content"));
-//				homework.setId(rs.getInt("id"));
-//				homework.setImageUrl(rs.getString("imageUrl"));
-//				homework.setLimitTime(rs.getString("limitTime"));
-//				homework.setSubject(rs.getString("subject"));
-//				homework.setType(rs.getString("type"));
-//				homework.setPublishTime(rs.getString("publishTime"));
-//				homework.setVoiceUrl(rs.getString("voiceUrl"));
-//			}
-//			return homework;
-//		} catch (Exception e) {
-//			throw new MyException(e);
-//		} finally {
-//			release(conn, st, rs);
-//		}
-//	}
 
 	/**
 	 * ��ʱ�õ�homework���
@@ -326,7 +198,7 @@ public class JdbcUtils {
 	 */
 	public static List<Notice> get2WeekNotice(String sql) {
 		Connection conn = null;
-		Statement st = null;
+		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		Notice notice = null;
@@ -334,8 +206,8 @@ public class JdbcUtils {
 
 		try {
 			conn = getConnection();
-			st = conn.createStatement();
-			rs = st.executeQuery(sql);
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery(sql);
 
 			while (rs.next()) {
 				notice = new Notice();
@@ -354,7 +226,7 @@ public class JdbcUtils {
 		} catch (Exception e) {
 			throw new MyException(e);
 		} finally {
-			release(conn, st, rs);
+			release(conn, ps, rs);
 		}
 	}
 
@@ -368,6 +240,7 @@ public class JdbcUtils {
 
 	/**
 	 * 获取客户端发布时间以后的消息
+	 * 
 	 * @param sql
 	 * @param lastNoticePublishTime
 	 * @return
@@ -375,7 +248,7 @@ public class JdbcUtils {
 	public static List<Notice> getAfterNotice(String sql,
 			String lastNoticePublishTime) {
 		Connection conn = null;
-		Statement st = null;
+		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		Notice notice = null;
@@ -383,8 +256,8 @@ public class JdbcUtils {
 
 		try {
 			conn = getConnection();
-			st = conn.createStatement();
-			rs = st.executeQuery(sql);
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery(sql);
 
 			while (rs.next()) {
 				notice = new Notice();
@@ -395,7 +268,7 @@ public class JdbcUtils {
 
 				long sqlPubT = Long.parseLong(rs.getString("publishTime"));
 				notice.setPublishTime(sqlPubT);
-				if (isAfterTime(sqlPubT,lastNoticePublishTime))
+				if (isAfterTime(sqlPubT, lastNoticePublishTime))
 					notices.add(notice);
 				notice = null;
 			}
@@ -403,28 +276,32 @@ public class JdbcUtils {
 		} catch (Exception e) {
 			throw new MyException(e);
 		} finally {
-			release(conn, st, rs);
+			release(conn, ps, rs);
 		}
 	}
 
 	/**
 	 * 给定的时间lastNoticePublishTime是不是在查询的数据之前，是的话true
-	 * @param pubT 查询到的数据发布时间
-	 * @param lastNoticePublishTime 软件收到最后的消息时间
-	 * @return 
+	 * 
+	 * @param pubT
+	 *            查询到的数据发布时间
+	 * @param lastNoticePublishTime
+	 *            软件收到最后的消息时间
+	 * @return
 	 */
-	private static boolean isAfterTime(long sqlPubT, String lastNoticePublishTime) {
+	private static boolean isAfterTime(long sqlPubT,
+			String lastNoticePublishTime) {
 		long lastTime = Long.parseLong(lastNoticePublishTime);
-		if ((sqlPubT - lastTime)>0)
+		if ((sqlPubT - lastTime) > 0)
 			return true;
 		else
 			return false;
 	}
-	
+
 	public static List<Homework> getAfterHomeworks(String sql,
 			String lastHomeworkPublishTime) {
 		Connection conn = null;
-		Statement st = null;
+		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		Homework homework = null;
@@ -432,11 +309,11 @@ public class JdbcUtils {
 
 		try {
 			conn = getConnection();
-			st = conn.createStatement();
-			rs = st.executeQuery(sql);
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery(sql);
 
 			while (rs.next()) {
-				homework = new Homework(); 
+				homework = new Homework();
 				homework.setId(rs.getInt("id"));
 				homework.setId(rs.getInt("id"));
 				homework.setDescribe(rs.getString("content"));
@@ -448,7 +325,7 @@ public class JdbcUtils {
 
 				long pubT = Long.parseLong(rs.getString("publishTime"));
 				homework.setPublishTime(pubT);
-				if (isAfterTime(pubT,lastHomeworkPublishTime))
+				if (isAfterTime(pubT, lastHomeworkPublishTime))
 					homeworks.add(homework);
 				homework = null;
 			}
@@ -456,10 +333,10 @@ public class JdbcUtils {
 		} catch (Exception e) {
 			throw new MyException(e);
 		} finally {
-			release(conn, st, rs);
+			release(conn, ps, rs);
 		}
 	}
-	
+
 	/**
 	 * 获取给定时间的前两周的数据
 	 * 
@@ -468,7 +345,7 @@ public class JdbcUtils {
 	 */
 	public static List<Homework> get2WeekHomeworks(String sql) {
 		Connection conn = null;
-		Statement st = null;
+		PreparedStatement ps = null;
 		ResultSet rs = null;
 
 		Homework homework = null;
@@ -476,11 +353,11 @@ public class JdbcUtils {
 
 		try {
 			conn = getConnection();
-			st = conn.createStatement();
-			rs = st.executeQuery(sql);
+			ps = conn.prepareStatement(sql);
+			rs = ps.executeQuery(sql);
 
 			while (rs.next()) {
-				homework = new Homework(); 
+				homework = new Homework();
 				homework.setId(rs.getInt("id"));
 				homework.setDescribe(rs.getString("content"));
 				homework.setImageUrl(rs.getString("imageUrl"));
@@ -499,7 +376,7 @@ public class JdbcUtils {
 		} catch (Exception e) {
 			throw new MyException(e);
 		} finally {
-			release(conn, st, rs);
+			release(conn, ps, rs);
 		}
 	}
 

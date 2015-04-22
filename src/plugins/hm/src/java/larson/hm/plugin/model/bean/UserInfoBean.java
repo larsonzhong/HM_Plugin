@@ -1,5 +1,6 @@
 package larson.hm.plugin.model.bean;
 
+
 /**
  * 所有用户的基类
  * 
@@ -8,10 +9,20 @@ package larson.hm.plugin.model.bean;
  * 
  */
 public class UserInfoBean {
+	private int classNo;
+
+	public int getClassNo() {
+		return classNo;
+	}
+
+	public void setClassNo(int classNo) {
+		this.classNo = classNo;
+	}
+
 	/**
 	 * 用户在服务器存储的id号，唯一标示一个用户
 	 */
-	protected int id;
+	protected int jid;
 	/**
 	 * 用户名
 	 */
@@ -34,39 +45,10 @@ public class UserInfoBean {
 	 */
 	protected String phone;
 
-	// /**
-	// * 所在系别
-	// */
-	// protected String sdept;
-	/**
-	 * 所学专业
-	 */
-	protected String majorName;
-
-	/**
-	 * 所在班级
-	 */
-	protected String classes;
 	/**
 	 * 学生类别，分为班干部，学委，和普通学生
 	 */
 	protected String role;
-
-	public String getMajorName() {
-		return majorName;
-	}
-
-	public void setMajorName(String majorName) {
-		this.majorName = majorName;
-	}
-
-	// public String getSdept() {
-	// return sdept;
-	// }
-	//
-	// public void setSdept(String sdept) {
-	// this.sdept = sdept;
-	// }
 
 	public String getRole() {
 		return role;
@@ -76,20 +58,12 @@ public class UserInfoBean {
 		this.role = role;
 	}
 
-	public String getClasses() {
-		return classes;
+	public int getJid() {
+		return jid;
 	}
 
-	public void setClasses(String classes) {
-		this.classes = classes;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
+	public void setJid(int jid) {
+		this.jid = jid;
 	}
 
 	public String getUsername() {
@@ -134,7 +108,7 @@ public class UserInfoBean {
 
 	@Override
 	public String toString() {
-		return username + password + nickname + groups + phone + majorName
-				+ classes + role;
+		return username + "---" + password + "---" + nickname + "---" + groups
+				+ "---" + phone + "---" + classNo + "---" + role;
 	}
 }

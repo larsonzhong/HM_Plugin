@@ -36,10 +36,11 @@ public class Constant {
 
 	/**
 	 * 用户角色
+	 * 
 	 * @author larson
 	 *
 	 */
-	public static final class Role{
+	public static final class Role {
 
 		public static final String TEACHER = "teacher";
 		public static final String STUDY_MONITER = "study_monitor";
@@ -50,14 +51,14 @@ public class Constant {
 
 	/**
 	 * 客户端请求服务器的指令
+	 * 
 	 * @author larson
 	 *
 	 */
 	public static final class Cmd {
+		public static final String PUBLISH_HOMEWORK = "publish_homework";
+		public static final String PUBLISH_NOTICE = "publish_notice";
 
-		public static final String PUBLISH_NOTICE = "publish_notice";//发布通知
-		public static final String PUBLISH_HOMEWORK = "publish_homework";//发布作业
-		
 	}
 
 	/**
@@ -66,7 +67,8 @@ public class Constant {
 	public static final class Code {
 
 		public static final String ERROR_PEMISSION_DELINE = "pession_deline";// 该用户没有权限操作这条指令
-
+		public static final String SYSMSG_PUBLISH_HOMEWORK_SUCCEED = "publish_homework_succeed";
+		public static final String SYSMSG_PUBLISH_NOTICE_SUCCEED = "publish_notice_succeed";
 	}
 
 	public static String IS_EMPYT = "600";
